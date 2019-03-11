@@ -7,7 +7,7 @@ Before running the program, please make sure that you have installed Node.js and
 
 The following document shows how to install and run Node.js and npm: https://www.taniarascia.com/how-to-install-and-use-node-js-and-npm-mac-and-windows/
 
-## Description of Program
+## Description of the Program
 We have a fictitious log file of JSON data that gives us information on files that were seen by users and whether it is safe or not (disposition).
 
 JSON format:
