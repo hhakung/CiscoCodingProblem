@@ -1,6 +1,6 @@
 // Make sure we got a filename on the command line
 if (process.argv.length < 3) {
-    console.log('Usage: node ' +process.argv[1] + ' PATH_TO_JSON_FILE');
+    console.log('Usage: node ' + process.argv[1] + ' PATH_TO_JSON_FILE');
     process.exit(1);
 }
 
@@ -8,7 +8,7 @@ var fs = require('fs');
 var filename = process.argv[2];
 
 fs.readFile(filename, 'utf8', function(err, data) {
-    if (err) throw err;
+    if (err) throw err; // Make sure we can open the file
 
     // The file is not properly formatted; it contains JSON packets, but they are not in arrays
     // so, process the data, get each JSON packet and store it in a JSON array
@@ -26,7 +26,10 @@ fs.readFile(filename, 'utf8', function(err, data) {
         tempData = tempData.substring(endBrace + 1); // store the rest of the string in tempData so that we can process it again
     }
 
-    // console.log(JSONData);
+    if (JSONData.length == 0) {
+        console.log('JSON File not properly read; exiting...');
+        process.exit(1);
+    }
 
     // Now that we have the properly formatted JSON data, we can process it and find unique extensions and the number of unique filenames for that extension
     var i;
@@ -34,9 +37,36 @@ fs.readFile(filename, 'utf8', function(err, data) {
     // var countSameFiles = 0;
     var uniqueExt = [];
     for (i in JSONData) {
+        // if there is no entry for nm, continue to the next entry
+        if (!JSONData[i].hasOwnProperty('nm')) {
+            continue;
+        }
+
+        // check if nm has any entry; if it doens't have any entry, continue to the next entry
+        if (JSONData[i].nm == '') {
+            continue;
+        }
+
         var locationOfPeriod = JSONData[i].nm.indexOf('.');
         var name = JSONData[i].nm.substring(0, locationOfPeriod);
         var ext = JSONData[i].nm.substring(locationOfPeriod + 1);
+
+        // if the locationOfPeriod is -1, the file format is invalid. continue to the next entry
+        if (locationOfPeriod == -1) {
+            continue;
+        }
+
+        // if name contains any of the following characters, they are invalid; continue to the next entry
+        if (name.includes('/') || name.includes('\\') || name.includes('?') || name.includes('%') || name.includes('*') || name.includes(':') || name.includes('|')
+            || name.includes('"') || name.includes('<') || name.includes('>') || name.includes('.') || name.includes(' ')) {
+                continue;
+        }
+
+        // if ext contains any of the following characters, they are invalid; continue to the next entry
+        if (ext.includes('/') || ext.includes('\\') || ext.includes('?') || ext.includes('%') || ext.includes('*') || ext.includes(':') || ext.includes('|')
+            || ext.includes('"') || ext.includes('<') || ext.includes('>') || ext.includes('.') || ext.includes(' ')) {
+                continue;
+        }
 
         if (uniqueExt.length == 0) {
             // if there is no entry in uniqueExt to compare with, just store the extension - ext, the count of files - 1, and the fileName
