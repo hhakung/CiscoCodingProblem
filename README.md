@@ -1,13 +1,13 @@
 # CiscoCodingProblem
 
-**Before Getting Started**
+##Before Getting Started
 This program is written in Node.js v10.15.3.
 
 Before running the program, please make sure that you have installed Node.js and npm on your system.
 
 The following document shows how to install and run Node.js and npm: https://www.taniarascia.com/how-to-install-and-use-node-js-and-npm-mac-and-windows/
 
-**Description of Program**
+##Description of Program
 We have a fictitious log file of JSON data that gives us information on files that were seen by users and whether it is safe or not (disposition).
 
 JSON format:
@@ -37,7 +37,7 @@ We would expect the output:
 ext: 2
 pdf: 1
 
-**Running the Program**
+##Running the Program
 To run the program, run the following command in the directory where the JSONParser.js is located.
 ```
 node JSONParser.js [PATH_TO_JSON_FILE]
